@@ -1,28 +1,30 @@
 package systems
 
-import "go-tetris/entities"
+import (
+	"go-tetris/entities"
+	"time"
+)
 
-type IGamePlaySystem interface {
-	System
-	play(*entities.Game)
-}
+const (
+	GAME_SPEED = 1
+)
 
 type GamePlaySystem struct {
+	game *entities.Game
 }
 
 func (gs *GamePlaySystem) Init(g *entities.Game) {
-
+	gs.game = g
 }
-func (gs *GamePlaySystem) Tick() {
-
+func (gs *GamePlaySystem) Tick(dt time.Duration) {
+	gs.play(gs.game, dt)
 }
 func (gs *GamePlaySystem) Close() {
 
 }
-func (gs *GamePlaySystem) play(g *entities.Game) {
-
+func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 }
 
-func NewGamePlaySystem() IGamePlaySystem {
-	return &GamePlaySystem{}
+func NewGamePlaySystem() GamePlaySystem {
+	return GamePlaySystem{}
 }

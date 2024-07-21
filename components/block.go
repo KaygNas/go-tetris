@@ -1,9 +1,9 @@
 package components
 
 type Block struct {
-	originX int
-	originY int
-	width   int
-	height  int
-	color   int64
+	OriginX int
+	OriginY int
+	Width   int
+	Height  int
+	Color   uint64
 }

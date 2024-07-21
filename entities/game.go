@@ -1,13 +1,13 @@
 package entities
 
 type Game struct {
-	board Board
-	piece Piece
+	Board Board
+	Piece Piece
 }
 
 func NewGame() Game {
 	return Game{
-		board: NewBoard(),
-		piece: NewPiece(),
+		Board: NewBoard(),
+		Piece: NewPiece(),
 	}
 }

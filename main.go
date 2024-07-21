@@ -6,11 +6,13 @@ import (
 	"time"
 )
 
-func gameLoop(fn func()) {
+func gameLoop(fn func(dt time.Duration)) {
 	frameTime := (1.0 / 60.0) * float64(time.Second)
+	prevTime := time.Now()
 	for {
+		dt := time.Since(prevTime)
 		prevTime := time.Now()
-		fn()
+		fn(dt)
 		delta := time.Since(prevTime)
 		pauseTime := frameTime - float64(delta)
 		if pauseTime > 0 {
@@ -31,8 +33,8 @@ func main() {
 	defer gamePlaySystem.Close()
 	defer renderSystem.Close()
 
-	gameLoop(func() {
-		gamePlaySystem.Tick()
-		renderSystem.Tick()
+	gameLoop(func(dt time.Duration) {
+		gamePlaySystem.Tick(dt)
+		renderSystem.Tick(dt)
 	})
 }
