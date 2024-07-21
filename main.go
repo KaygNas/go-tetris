@@ -7,12 +7,11 @@ import (
 )
 
 func gameLoop(fn func()) {
-	prevTime := time.Now()
-	frameTime := 1.0 / 60.0 * float64(time.Second)
+	frameTime := (1.0 / 60.0) * float64(time.Second)
 	for {
+		prevTime := time.Now()
 		fn()
-		currTime := time.Now()
-		delta := currTime.Sub(prevTime)
+		delta := time.Since(prevTime)
 		pauseTime := frameTime - float64(delta)
 		if pauseTime > 0 {
 			time.Sleep(time.Duration(pauseTime))
