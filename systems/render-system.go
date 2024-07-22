@@ -15,8 +15,9 @@ func (rs *RenderSystem) Init(g *entities.Game) {
 	termbox.Init()
 	rs.game = g
 }
-func (rs *RenderSystem) Tick(dt time.Duration) {
+func (rs *RenderSystem) Tick(dt time.Duration) error {
 	rs.render(rs.game)
+	return nil
 }
 func (rs *RenderSystem) Close() {
 	termbox.Close()

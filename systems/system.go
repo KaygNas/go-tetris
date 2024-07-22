@@ -7,6 +7,6 @@ import (
 
 type System interface {
 	Init(*entities.Game)
-	Tick(dt time.Duration)
+	Tick(dt time.Duration) error
 	Close()
 }
