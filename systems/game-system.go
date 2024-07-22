@@ -43,10 +43,15 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 		if ev.Type == termbox.EventKey {
 			switch {
 			case ev.Key == termbox.KeyArrowLeft:
+				g.Piece.MoveLeft()
 			case ev.Key == termbox.KeyArrowRight:
+				g.Piece.MoveRight()
 			case ev.Key == termbox.KeyArrowUp:
+				g.Piece.RotateCW()
 			case ev.Key == termbox.KeyArrowDown:
+				g.Piece.MoveDown()
 			case ev.Key == termbox.KeySpace:
+
 			case ev.Ch == 'q' || ev.Key == termbox.KeyEsc || ev.Key == termbox.KeyCtrlC || ev.Key == termbox.KeyCtrlD:
 				gs.shouldQuit = true
 			}
