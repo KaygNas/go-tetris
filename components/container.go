@@ -9,9 +9,6 @@ type Container struct {
 
 func (container *Container) GetChildAbsPosition(block *Block) (int, int) {
 	x, y := container.OriginX, container.OriginY
-	x += container.Transform.translateX
-	y += container.Transform.translateY
-	x += block.OriginX
-	y += block.OriginY
-	return x, y
+	dx, dy := container.Transform.TranformPosition(block.OriginX, block.OriginY)
+	return x + dx, y + dy
 }
