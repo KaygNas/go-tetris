@@ -34,15 +34,17 @@ func (p *Piece) RotateCW() {
 }
 
 func NewPieceI() Piece {
-	color := uint64(0x00FF00)
+	color := components.HexColor(0x00FFFF)
 	return Piece{
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
+			OriginX: 0.5,
+			OriginY: -2,
 			Children: []components.Block{
-				{OriginX: 0, OriginY: 0, Width: 1, Height: 1, Color: color},
-				{OriginX: 0, OriginY: -1, Width: 1, Height: 1, Color: color},
-				{OriginX: 0, OriginY: -2, Width: 1, Height: 1, Color: color},
-				{OriginX: 0, OriginY: -3, Width: 1, Height: 1, Color: color},
+				{OriginX: -0.5, OriginY: -1.5, Width: 1, Height: 1, Color: color},
+				{OriginX: -0.5, OriginY: -0.5, Width: 1, Height: 1, Color: color},
+				{OriginX: -0.5, OriginY: 0.5, Width: 1, Height: 1, Color: color},
+				{OriginX: -0.5, OriginY: 1.5, Width: 1, Height: 1, Color: color},
 			},
 		}}
 }

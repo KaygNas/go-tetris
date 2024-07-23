@@ -8,12 +8,12 @@ const (
 )
 
 type Transform struct {
-	translateX int
-	translateY int
+	translateX float64
+	translateY float64
 	rotate     int
 }
 
-func (transform *Transform) Translate(x, y int) {
+func (transform *Transform) Translate(x, y float64) {
 	transform.translateX += x
 	transform.translateY += y
 }
@@ -22,7 +22,7 @@ func (transform *Transform) RotateCW() {
 	transform.rotate = (transform.rotate + 1) % 4
 }
 
-func (transform *Transform) TranformPosition(x, y int) (ax int, ay int) {
+func (transform *Transform) TranformPosition(x, y float64) (ax float64, ay float64) {
 	// the origin of rotation is always (0,0)
 	switch transform.rotate {
 	case ROTATE_0:

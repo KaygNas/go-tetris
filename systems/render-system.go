@@ -1,6 +1,7 @@
 package systems
 
 import (
+	"go-tetris/components"
 	"go-tetris/entities"
 	"time"
 
@@ -13,6 +14,7 @@ type RenderSystem struct {
 
 func (rs *RenderSystem) Init(g *entities.Game) {
 	termbox.Init()
+	termbox.SetOutputMode(termbox.OutputRGB)
 	rs.game = g
 }
 func (rs *RenderSystem) Tick(dt time.Duration) error {
@@ -27,9 +29,19 @@ func (rs *RenderSystem) render(g *entities.Game) {
 	pieceContainer := g.Piece.Container
 	for _, b := range pieceContainer.Children {
 		x, y := pieceContainer.GetChildAbsPosition(&b)
-		termbox.SetCell(x, y, ' ', termbox.Attribute(b.Color), termbox.Attribute(b.Color))
+		rasterizePixel(x, y, b.Color)
 	}
 	termbox.Flush()
+}
+
+// TODO: Implement the rasterizePixel function
+func rasterizePixel(x, y float64, color components.Color) {
+	// rasterize the block
+	colorAttr := termbox.RGBToAttribute(color.R, color.G, color.B)
+	// 2x because each block is 2 characters high so that it looks like a square
+	x *= 2
+	termbox.SetCell(int(x), int(y), ' ', colorAttr, colorAttr)
+	termbox.SetCell(int(x)+1, int(y), ' ', colorAttr, colorAttr)
 }
 
 func NewRenderSystem() RenderSystem {
