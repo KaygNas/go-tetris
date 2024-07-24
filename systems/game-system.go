@@ -73,6 +73,10 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 	default:
 		// no event
 	}
+	// check if the piece is out of bounds
+	if isOutOfBounds := !g.Board.Container.Contain(&g.Piece.Container); isOutOfBounds {
+		g.Piece.MoveInto(&g.Board.Container)
+	}
 }
 
 func NewGamePlaySystem() GamePlaySystem {

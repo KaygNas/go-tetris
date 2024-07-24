@@ -19,3 +19,14 @@ type Block struct {
 	Height  float64
 	Color   Color
 }
+
+func (block *Block) GetBoundingBox() BoundingBox {
+	return BoundingBox{
+		MinX:   block.OriginX,
+		MinY:   block.OriginY,
+		MaxX:   block.OriginX + block.Width,
+		MaxY:   block.OriginY + block.Height,
+		Width:  block.Width,
+		Height: block.Height,
+	}
+}
