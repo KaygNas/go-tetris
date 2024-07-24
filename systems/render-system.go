@@ -26,22 +26,35 @@ func (rs *RenderSystem) Close() {
 }
 func (rs *RenderSystem) render(g *entities.Game) {
 	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
+
+	// render the board
+	boardContainer := g.Board.Container
+	for _, b := range boardContainer.Children {
+		x, y := boardContainer.GetChildAbsPosition(&b)
+		rasterizeRect(x, y, b.Width, b.Height, b.Color)
+	}
+
 	pieceContainer := g.Piece.Container
 	for _, b := range pieceContainer.Children {
 		x, y := pieceContainer.GetChildAbsPosition(&b)
-		rasterizePixel(x, y, b.Color)
+		rasterizeRect(x, y, b.Width, b.Height, b.Color)
 	}
 	termbox.Flush()
 }
 
-// TODO: Implement the rasterizePixel function
-func rasterizePixel(x, y float64, color components.Color) {
+// TODO: Implement the rasterizeRect function
+func rasterizeRect(x, y, w, h float64, color components.Color) {
 	// rasterize the block
 	colorAttr := termbox.RGBToAttribute(color.R, color.G, color.B)
 	// 2x because each block is 2 characters high so that it looks like a square
-	x *= 2
-	termbox.SetCell(int(x), int(y), ' ', colorAttr, colorAttr)
-	termbox.SetCell(int(x)+1, int(y), ' ', colorAttr, colorAttr)
+	for i := 0; i < int(w); i++ {
+		for j := 0; j < int(h); j++ {
+			cx := (int(x) + i) * 2
+			cy := int(y) + j
+			termbox.SetCell(cx, cy, ' ', colorAttr, colorAttr)
+			termbox.SetCell(cx+1, cy, ' ', colorAttr, colorAttr)
+		}
+	}
 }
 
 func NewRenderSystem() RenderSystem {
