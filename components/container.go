@@ -28,8 +28,15 @@ func (container *Container) GetBoundingBox() BoundingBox {
 			maxY = math.Max(maxY, bb.MaxY)
 		}
 	}
+	// the bbox is still a rectangle even after rotation
 	minX, minY = container.Transform.TranformPosition(minX, minY)
 	maxX, maxY = container.Transform.TranformPosition(maxX, maxY)
+	if minX > maxX {
+		minX, maxX = maxX, minX
+	}
+	if minY > maxY {
+		minY, maxY = maxY, minY
+	}
 	minX, minY, maxX, maxY = minX+container.OriginX, minY+container.OriginY, maxX+container.OriginX, maxY+container.OriginY
 	return BoundingBox{
 		MinX:   minX,
