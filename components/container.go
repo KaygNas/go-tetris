@@ -3,16 +3,32 @@ package components
 import "math"
 
 type Container struct {
-	OriginX   float64
-	OriginY   float64
+	CenterX   float64
+	CenterY   float64
 	Children  []Block
 	Transform Transform
 }
 
-func (container *Container) GetChildAbsPosition(block *Block) (float64, float64) {
-	x, y := container.OriginX, container.OriginY
-	dx, dy := container.Transform.TranformPosition(block.CenterX, block.CenterY)
-	return x + dx, y + dy
+func (container *Container) GetChildAbsoluteBoundingBox(block *Block) BoundingBox {
+	bb := block.GetBoundingBox()
+	minX, minY := container.Transform.TranformPosition(bb.MinX, bb.MinY)
+	maxX, maxY := container.Transform.TranformPosition(bb.MaxX, bb.MaxY)
+	if minX > maxX {
+		minX, maxX = maxX, minX
+	}
+	if minY > maxY {
+		minY, maxY = maxY, minY
+	}
+	minX, minY = minX+container.CenterX, minY+container.CenterY
+	maxX, maxY = maxX+container.CenterX, maxY+container.CenterY
+	return BoundingBox{
+		MinX:   minX,
+		MinY:   minY,
+		MaxX:   maxX,
+		MaxY:   maxY,
+		Width:  maxX - minX,
+		Height: maxY - minY,
+	}
 }
 
 func (container *Container) GetBoundingBox() BoundingBox {
@@ -37,7 +53,7 @@ func (container *Container) GetBoundingBox() BoundingBox {
 	if minY > maxY {
 		minY, maxY = maxY, minY
 	}
-	minX, minY, maxX, maxY = minX+container.OriginX, minY+container.OriginY, maxX+container.OriginX, maxY+container.OriginY
+	minX, minY, maxX, maxY = minX+container.CenterX, minY+container.CenterY, maxX+container.CenterX, maxY+container.CenterY
 	return BoundingBox{
 		MinX:   minX,
 		MinY:   minY,

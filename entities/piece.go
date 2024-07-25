@@ -67,8 +67,8 @@ func NewPieceI() Piece {
 	return Piece{
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
-			OriginX: 2,
-			OriginY: -2,
+			CenterX: 6,
+			CenterY: -12,
 			Children: []components.Block{
 				{CenterX: 0, CenterY: -1.5, Width: 1, Height: 1, Color: color},
 				{CenterX: 0, CenterY: -0.5, Width: 1, Height: 1, Color: color},

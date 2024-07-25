@@ -9,11 +9,13 @@ type Board struct {
 }
 
 func NewBoard() Board {
+	Width := 12.0
+	Height := 24.0
 	return Board{Container: components.Container{
-		OriginX: 0,
-		OriginY: 0,
+		CenterX: Width / 2,
+		CenterY: Height / 2,
 		Children: []components.Block{
-			{Width: 12, Height: 24, Color: components.HexColor(0xFFFFFF)},
+			{Width: Width, Height: Height, Color: components.HexColor(0xFFFFFF)},
 		},
 	}}
 }

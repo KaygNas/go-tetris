@@ -25,10 +25,10 @@ func TestGetBoundingBox(t *testing.T) {
 	t.Run("should return correct bounding box at not zero origin", func(t *testing.T) {
 		c := newContainer()
 
-		c.OriginX = 10
-		c.OriginY = 10
+		c.CenterX = 10
+		c.CenterY = 10
 		if bb := c.GetBoundingBox(); bb.MinX != 5 || bb.MinY != 5 || bb.MaxX != 15 || bb.MaxY != 25 {
-			t.Errorf("BoundingBox at origin (%v, %v) is not correct: %v", c.OriginX, c.OriginY, bb)
+			t.Errorf("BoundingBox at origin (%v, %v) is not correct: %v", c.CenterX, c.CenterY, bb)
 		}
 	})
 

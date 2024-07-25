@@ -30,14 +30,14 @@ func (rs *RenderSystem) render(g *entities.Game) {
 	// render the board
 	boardContainer := g.Board.Container
 	for _, b := range boardContainer.Children {
-		x, y := boardContainer.GetChildAbsPosition(&b)
-		rasterizeRect(x, y, b.Width, b.Height, b.Color)
+		bb := boardContainer.GetChildAbsoluteBoundingBox(&b)
+		rasterizeRect(bb.MinX, bb.MinY, bb.Width, bb.Height, b.Color)
 	}
 
 	pieceContainer := g.Piece.Container
 	for _, b := range pieceContainer.Children {
-		x, y := pieceContainer.GetChildAbsPosition(&b)
-		rasterizeRect(x, y, b.Width, b.Height, b.Color)
+		bb := pieceContainer.GetChildAbsoluteBoundingBox(&b)
+		rasterizeRect(bb.MinX, bb.MinY, bb.Width, bb.Height, b.Color)
 	}
 	termbox.Flush()
 }
