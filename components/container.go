@@ -11,7 +11,7 @@ type Container struct {
 
 func (container *Container) GetChildAbsPosition(block *Block) (float64, float64) {
 	x, y := container.OriginX, container.OriginY
-	dx, dy := container.Transform.TranformPosition(block.OriginX, block.OriginY)
+	dx, dy := container.Transform.TranformPosition(block.CenterX, block.CenterY)
 	return x + dx, y + dy
 }
 

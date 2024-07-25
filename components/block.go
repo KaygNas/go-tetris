@@ -13,19 +13,21 @@ func HexColor(hex uint32) Color {
 }
 
 type Block struct {
-	OriginX float64
-	OriginY float64
+	CenterX float64
+	CenterY float64
 	Width   float64
 	Height  float64
 	Color   Color
 }
 
 func (block *Block) GetBoundingBox() BoundingBox {
+	halfWidth := block.Width / 2
+	halfHeight := block.Height / 2
 	return BoundingBox{
-		MinX:   block.OriginX,
-		MinY:   block.OriginY,
-		MaxX:   block.OriginX + block.Width,
-		MaxY:   block.OriginY + block.Height,
+		MinX:   block.CenterX - halfWidth,
+		MinY:   block.CenterY - halfHeight,
+		MaxX:   block.CenterX + halfWidth,
+		MaxY:   block.CenterY + halfHeight,
 		Width:  block.Width,
 		Height: block.Height,
 	}

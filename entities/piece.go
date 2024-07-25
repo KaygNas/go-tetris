@@ -70,10 +70,10 @@ func NewPieceI() Piece {
 			OriginX: 2,
 			OriginY: -2,
 			Children: []components.Block{
-				{OriginX: -0.5, OriginY: -1.5, Width: 1, Height: 1, Color: color},
-				{OriginX: -0.5, OriginY: -0.5, Width: 1, Height: 1, Color: color},
-				{OriginX: -0.5, OriginY: 0.5, Width: 1, Height: 1, Color: color2},
-				{OriginX: -0.5, OriginY: 1.5, Width: 1, Height: 1, Color: color2},
+				{CenterX: 0, CenterY: -1.5, Width: 1, Height: 1, Color: color},
+				{CenterX: 0, CenterY: -0.5, Width: 1, Height: 1, Color: color},
+				{CenterX: 0, CenterY: 0.5, Width: 1, Height: 1, Color: color2},
+				{CenterX: 0, CenterY: 1.5, Width: 1, Height: 1, Color: color2},
 			},
 		}}
 }
