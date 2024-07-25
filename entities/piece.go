@@ -36,7 +36,6 @@ func (p *Piece) RotateCW() {
 	p.Container.Transform.RotateCW()
 }
 
-// TODO: fix bug
 func (p *Piece) MoveInto(target components.BoundingBoxer) {
 	sBbox := p.GetBoundingBox()
 	tBbox := target.GetBoundingBox()
