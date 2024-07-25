@@ -2,6 +2,7 @@ package entities
 
 import (
 	"go-tetris/components"
+	"os"
 )
 
 // Piece Type for the Tetris Piece
@@ -59,6 +60,10 @@ func (p *Piece) MoveInto(target components.BoundingBoxer) {
 
 func NewPieceI() Piece {
 	color := components.HexColor(0x00FFFF)
+	color2 := color
+	if mode := os.Getenv("MODE"); mode == "development" {
+		color2 = components.HexColor(0x00AAAA) // Color for development mode
+	}
 	return Piece{
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
@@ -67,8 +72,8 @@ func NewPieceI() Piece {
 			Children: []components.Block{
 				{OriginX: -0.5, OriginY: -1.5, Width: 1, Height: 1, Color: color},
 				{OriginX: -0.5, OriginY: -0.5, Width: 1, Height: 1, Color: color},
-				{OriginX: -0.5, OriginY: 0.5, Width: 1, Height: 1, Color: color},
-				{OriginX: -0.5, OriginY: 1.5, Width: 1, Height: 1, Color: color},
+				{OriginX: -0.5, OriginY: 0.5, Width: 1, Height: 1, Color: color2},
+				{OriginX: -0.5, OriginY: 1.5, Width: 1, Height: 1, Color: color2},
 			},
 		}}
 }
