@@ -4,34 +4,64 @@ import (
 	"testing"
 )
 
+func newContainer() Container {
+	return Container{
+		Children: []Block{
+			{CenterX: 0, CenterY: 0, Width: 10, Height: 10},
+			{CenterX: 0, CenterY: 10, Width: 10, Height: 10},
+		},
+	}
+}
+
 func TestGetBoundingBox(t *testing.T) {
-	newContainer := func() Container {
-		return Container{
-			Children: []Block{
-				{Width: 10, Height: 10},
-				{OriginX: 0, OriginY: 10, Width: 10, Height: 10},
-			},
+	t.Run("should return correct bounding box", func(t *testing.T) {
+		c := newContainer()
+
+		if bb := c.GetBoundingBox(); bb.MinX != -5 || bb.MinY != -5 || bb.MaxX != 5 || bb.MaxY != 15 {
+			t.Errorf("BoundingBox is not correct: %v", bb)
 		}
-	}
+	})
 
-	c := newContainer()
-	if bb := c.GetBoundingBox(); bb.MinX != 0 || bb.MinY != 0 || bb.MaxX != 10 || bb.MaxY != 20 {
-		t.Errorf("BoundingBox is not correct: %v", bb)
-	}
+	t.Run("should return correct bounding box at not zero origin", func(t *testing.T) {
+		c := newContainer()
 
-	c.OriginX = 10
-	c.OriginY = 10
-	if bb := c.GetBoundingBox(); bb.MinX != 10 || bb.MinY != 10 || bb.MaxX != 20 || bb.MaxY != 30 {
-		t.Errorf("BoundingBox at origin (%v, %v) is not correct: %v", c.OriginX, c.OriginY, bb)
-	}
+		c.OriginX = 10
+		c.OriginY = 10
+		if bb := c.GetBoundingBox(); bb.MinX != 5 || bb.MinY != 5 || bb.MaxX != 15 || bb.MaxY != 25 {
+			t.Errorf("BoundingBox at origin (%v, %v) is not correct: %v", c.OriginX, c.OriginY, bb)
+		}
+	})
 
-	c.Transform = Transform{translateX: 10, translateY: 10}
-	if bb := c.GetBoundingBox(); bb.MinX != 20 || bb.MinY != 20 || bb.MaxX != 30 || bb.MaxY != 40 {
-		t.Errorf("BoundingBox translate at (%v, %v) is not correct: %v", c.Transform.translateX, c.Transform.translateY, bb)
-	}
+	t.Run("should return correct bounding box after translate", func(t *testing.T) {
+		c := newContainer()
 
-	c.Transform.RotateCW()
-	if bb := c.GetBoundingBox(); bb.MinX != 20 || bb.MinY != 20 || bb.MaxX != 40 || bb.MaxY != 30 {
-		t.Errorf("BoundingBox rotate at (%v) is not correct: %v", c.Transform.rotate, bb)
-	}
+		c.Transform = Transform{translateX: 10, translateY: 10}
+		if bb := c.GetBoundingBox(); bb.MinX != 5 || bb.MinY != 5 || bb.MaxX != 15 || bb.MaxY != 25 {
+			t.Errorf("BoundingBox translate at (%v, %v) is not correct: %v", c.Transform.translateX, c.Transform.translateY, bb)
+		}
+	})
+
+	t.Run("should return correct bounding box after rotate", func(t *testing.T) {
+		c := newContainer()
+
+		c.Transform.RotateCW()
+		if bb := c.GetBoundingBox(); bb.MinX != -5 || bb.MinY != -5 || bb.MaxX != 15 || bb.MaxY != 5 {
+			t.Errorf("BoundingBox rotate at (%v) is not correct: %v", c.Transform.rotate, bb)
+		}
+
+		c.Transform.RotateCW()
+		if bb := c.GetBoundingBox(); bb.MinX != -5 || bb.MinY != -15 || bb.MaxX != 5 || bb.MaxY != 5 {
+			t.Errorf("BoundingBox rotate at (%v) is not correct: %v", c.Transform.rotate, bb)
+		}
+
+		c.Transform.RotateCW()
+		if bb := c.GetBoundingBox(); bb.MinX != -15 || bb.MinY != -5 || bb.MaxX != 5 || bb.MaxY != 5 {
+			t.Errorf("BoundingBox rotate at (%v) is not correct: %v", c.Transform.rotate, bb)
+		}
+
+		c.Transform.RotateCW()
+		if bb := c.GetBoundingBox(); bb.MinX != -5 || bb.MinY != -5 || bb.MaxX != 5 || bb.MaxY != 15 {
+			t.Errorf("BoundingBox rotate at (%v) is not correct: %v", c.Transform.rotate, bb)
+		}
+	})
 }
