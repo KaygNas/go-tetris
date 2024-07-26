@@ -77,6 +77,12 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 	if isOutOfBounds := !g.Board.Container.Contain(&g.Piece.Container); isOutOfBounds {
 		g.Piece.MoveInto(&g.Board.Container)
 	}
+
+	// check if the piece is reached the bottom
+	if isReachedBottom := g.Piece.Container.GetBoundingBox().MaxY == g.Board.Container.GetBoundingBox().MaxY; isReachedBottom {
+		g.LockedPieces.Container.Merge(&g.Piece.Container)
+		g.Piece = entities.NewPiece()
+	}
 }
 
 func NewGamePlaySystem() GamePlaySystem {
