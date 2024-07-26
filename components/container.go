@@ -90,7 +90,7 @@ func (container *Container) Contain(other *Container) bool {
 func (container *Container) Merge(other *Container) {
 	for _, block := range other.Children {
 		x, y := other.GetAboslutePosition(block.CenterX, block.CenterY)
-		x, y = container.Transform.ReversePosition(x, y)
+		x, y = container.GetLocalPosition(x, y)
 		b := Block{
 			CenterX: x,
 			CenterY: y,

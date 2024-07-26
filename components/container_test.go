@@ -88,3 +88,29 @@ func TestGetBoundingBox(t *testing.T) {
 		}
 	})
 }
+
+func TestMerge(t *testing.T) {
+	t.Run("should merge correctly", func(t *testing.T) {
+		c1 := newContainer()
+		c1.CenterX = 5
+		c1.CenterY = 5
+
+		c2 := newContainer()
+		c2.CenterX = 10
+		c2.CenterY = 10
+
+		len1 := len(c1.Children)
+		len2 := len(c2.Children)
+
+		c1.Merge(&c2)
+
+		if len(c1.Children) != len1+len2 {
+			t.Errorf("Children length is not correct: %v", c1.Children)
+		}
+
+		nc1, nc2 := c1.Children[len1], c1.Children[len1+1]
+		if nc1.CenterX != 5 || nc1.CenterY != 5 || nc2.CenterX != 5 || nc2.CenterY != 15 {
+			t.Errorf("Children Position is not correct: %v", c1.Children)
+		}
+	})
+}
