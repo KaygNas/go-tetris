@@ -28,6 +28,7 @@ func (rs *RenderSystem) render(g *entities.Game) {
 	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
 
 	renderContainer(&g.Board.Container)
+	renderContainer(&g.LockedPieces.Container)
 	renderContainer(&g.Piece.Container)
 
 	termbox.Flush()
