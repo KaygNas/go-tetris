@@ -13,7 +13,30 @@ func newContainer() Container {
 	}
 }
 
+func TestGetPosition(t *testing.T) {
+	t.Run("should return correct absolute position", func(t *testing.T) {
+		c := newContainer()
+		c.CenterX = 5
+		c.CenterY = 10
+		c.Transform.Translate(5, 5)
+		if ax, ay := c.GetAboslutePosition(5, 5); ax != 15 || ay != 20 {
+			t.Errorf("Absolute Position is not correct: %v, %v", ax, ay)
+		}
+	})
+
+	t.Run("should return correct local position", func(t *testing.T) {
+		c := newContainer()
+		c.CenterX = 5
+		c.CenterY = 10
+		c.Transform.Translate(5, 5)
+		if lx, ly := c.GetLocalPosition(15, 20); lx != 5 || ly != 5 {
+			t.Errorf("Local Position is not correct: %v, %v", lx, ly)
+		}
+	})
+}
+
 func TestGetBoundingBox(t *testing.T) {
+
 	t.Run("should return correct bounding box", func(t *testing.T) {
 		c := newContainer()
 
