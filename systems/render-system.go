@@ -27,19 +27,17 @@ func (rs *RenderSystem) Close() {
 func (rs *RenderSystem) render(g *entities.Game) {
 	termbox.Clear(termbox.ColorDefault, termbox.ColorDefault)
 
-	// render the board
-	boardContainer := g.Board.Container
-	for _, b := range boardContainer.Children {
-		bb := boardContainer.GetChildAbsoluteBoundingBox(&b)
-		rasterizeRect(bb.MinX, bb.MinY, bb.Width, bb.Height, b.Color)
-	}
+	renderContainer(&g.Board.Container)
+	renderContainer(&g.Piece.Container)
 
-	pieceContainer := g.Piece.Container
-	for _, b := range pieceContainer.Children {
-		bb := pieceContainer.GetChildAbsoluteBoundingBox(&b)
+	termbox.Flush()
+}
+
+func renderContainer(c *components.Container) {
+	for _, b := range c.Children {
+		bb := c.GetChildAbsoluteBoundingBox(&b)
 		rasterizeRect(bb.MinX, bb.MinY, bb.Width, bb.Height, b.Color)
 	}
-	termbox.Flush()
 }
 
 // TODO: Implement the rasterizeRect function
