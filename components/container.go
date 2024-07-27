@@ -86,8 +86,13 @@ func (container *Container) ChildrenCollide(other *Container) bool {
 
 func (container *Container) Merge(other *Container) {
 	for _, block := range other.Blocks {
-		x, y := other.GetAboslutePosition(block.X, block.Y)
-		x, y = container.GetLocalPosition(x, y)
+		bbox := block.GetBoundingBox()
+		minX, minY := other.GetAboslutePosition(bbox.MinX, bbox.MinY)
+		maxX, maxY := other.GetAboslutePosition(bbox.MaxX, bbox.MaxY)
+		minX, minY = container.GetLocalPosition(minX, minY)
+		maxX, maxY = container.GetLocalPosition(maxX, maxY)
+		x := minInt(minX, maxX)
+		y := minInt(minY, maxY)
 		b := Block{
 			X:     x,
 			Y:     y,

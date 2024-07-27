@@ -91,12 +91,9 @@ func TestGetBoundingBox(t *testing.T) {
 func TestMerge(t *testing.T) {
 	t.Run("should merge correctly", func(t *testing.T) {
 		c1 := newContainer()
-		c1.X = 5
-		c1.Y = 5
 
 		c2 := newContainer()
-		c2.X = 10
-		c2.Y = 10
+		c2.Transform.RotateCW()
 
 		len1 := len(c1.Blocks)
 		len2 := len(c2.Blocks)
@@ -108,7 +105,7 @@ func TestMerge(t *testing.T) {
 		}
 
 		nc1, nc2 := c1.Blocks[len1], c1.Blocks[len1+1]
-		if nc1.X != 5 || nc1.Y != 5 || nc2.X != 5 || nc2.Y != 6 {
+		if nc1.X != -1 || nc1.Y != 0 || nc2.X != -2 || nc2.Y != 0 {
 			t.Errorf("Children Position is not correct: %v", c1.Blocks)
 		}
 	})
