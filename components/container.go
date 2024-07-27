@@ -71,7 +71,7 @@ func (container *Container) BoundingBoxContain(other *Container) bool {
 	return bb1.Contain(&bb2)
 }
 
-func (container *Container) ChildrenCollide(other *Container) bool {
+func (container *Container) IsChildrenCollide(other *Container) bool {
 	for _, block := range container.Blocks {
 		bb1 := container.GetChildAbsoluteBoundingBox(&block)
 		for _, otherBlock := range other.Blocks {

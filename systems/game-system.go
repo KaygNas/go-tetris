@@ -2,7 +2,6 @@ package systems
 
 import (
 	"errors"
-	"go-tetris/components"
 	"go-tetris/entities"
 	"time"
 
@@ -69,7 +68,7 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 
 	select {
 	case <-gs.fallingTimer.C:
-		// gs.clearLines()
+		gs.clearLines()
 		g.Piece.MoveDown()
 		gs.fallingTimer.Reset(FALLING_SPEED)
 	default:
@@ -77,27 +76,28 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 	}
 
 	// check if the piece is collided with the locked pieces
-	// if isChildrenCollided := g.LockedPieces.Container.ChildrenCollide(&g.Piece.Container); isChildrenCollided {
-	// 	g.Piece.RestoreTransform()
-	// }
+	if isChildrenCollided := g.LockedPieces.Container.IsChildrenCollide(&g.Piece.Container); isChildrenCollided {
+		g.Piece.RestoreTransform()
+	}
 
 	// check if the piece is out of bounds
-	// if isOutOfBounds := !g.Board.Container.BoundingBoxContain(&g.Piece.Container); isOutOfBounds {
-	// 	g.Piece.MoveInto(&g.Board.Container)
-	// }
+	if isOutOfBounds := !g.Board.Container.BoundingBoxContain(&g.Piece.Container); isOutOfBounds {
+		g.Piece.MoveInto(&g.Board.Container)
+	}
 
 	// check if the piece can move down
-	// g.Piece.MoveDown()
-	// if isChildrenCollided := g.LockedPieces.Container.ChildrenCollide(&g.Piece.Container); isChildrenCollided {
-	// 	g.Piece.RestoreTransform()
-	// 	gs.lockCurrentPiece()
-	// } else {
-	// 	g.Piece.RestoreTransform()
-	// }
+	g.Piece.MoveDown()
+	if isChildrenCollided := g.LockedPieces.Container.IsChildrenCollide(&g.Piece.Container); isChildrenCollided {
+		g.Piece.RestoreTransform()
+		gs.lockCurrentPiece()
+	} else {
+		g.Piece.RestoreTransform()
+	}
+
 	// check if the piece is reached the bottom
-	// if isReachedBottom := g.Piece.Container.GetBoundingBox().MaxY >= g.Board.Container.GetBoundingBox().MaxY; isReachedBottom {
-	// 	gs.lockCurrentPiece()
-	// }
+	if isReachedBottom := g.Piece.Container.GetBoundingBox().MaxY >= g.Board.Container.GetBoundingBox().MaxY; isReachedBottom {
+		gs.lockCurrentPiece()
+	}
 }
 
 func (gs *GamePlaySystem) lockCurrentPiece() {
@@ -107,19 +107,12 @@ func (gs *GamePlaySystem) lockCurrentPiece() {
 }
 
 func (gs *GamePlaySystem) clearLines() {
-	g := gs.game
-	bb := g.Board.Container.GetBoundingBox()
-	for y := bb.MinY; y < bb.MaxY; y++ {
-		removingBbox := components.BoundingBox{
-			MinX:   bb.MinX,
-			MinY:   y,
-			MaxX:   bb.MaxX,
-			MaxY:   y + 1,
-			Width:  bb.Width,
-			Height: 1,
-		}
-		if g.LockedPieces.CheckFullInBoundingBox(&removingBbox) {
-			g.LockedPieces.RemoveChildrenInBoundingBox(&removingBbox)
+	lp := &gs.game.LockedPieces
+	bbox := gs.game.Board.GetBoundingBox()
+	for y := bbox.MinY; y < bbox.MaxY; y++ {
+		if lp.CheckLine(bbox.MinX, bbox.MaxX, y) {
+			lp.RemoveLine(bbox.MinX, bbox.MaxX, y)
+			lp.MoveDownBlocksByY(y)
 		}
 	}
 }

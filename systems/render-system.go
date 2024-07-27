@@ -30,7 +30,7 @@ func (rs *RenderSystem) render(g *entities.Game) {
 
 	renderContainer(&g.Board.Container)
 	renderContainer(&g.Piece.Container)
-	// renderContainer(&g.LockedPieces.Container)
+	renderContainer(&g.LockedPieces.Container)
 
 	termbox.Flush()
 }
