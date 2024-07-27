@@ -13,22 +13,21 @@ func HexColor(hex uint32) Color {
 }
 
 type Block struct {
-	CenterX float64
-	CenterY float64
-	Width   float64
-	Height  float64
-	Color   Color
+	/* X, Y is the left-top conner of the Block */
+	X, Y  int
+	Color Color
 }
 
 func (block *Block) GetBoundingBox() BoundingBox {
-	halfWidth := block.Width / 2
-	halfHeight := block.Height / 2
+	// width of the block is 1, height of the block is 1
+	const Width = 1
+	const Height = 1
 	return BoundingBox{
-		MinX:   block.CenterX - halfWidth,
-		MinY:   block.CenterY - halfHeight,
-		MaxX:   block.CenterX + halfWidth,
-		MaxY:   block.CenterY + halfHeight,
-		Width:  block.Width,
-		Height: block.Height,
+		MinX:   block.X,
+		MinY:   block.Y,
+		MaxX:   block.X + Width,
+		MaxY:   block.Y + Height,
+		Width:  Width,
+		Height: Height,
 	}
 }

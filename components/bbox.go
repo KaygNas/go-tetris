@@ -1,11 +1,11 @@
 package components
 
 import (
-	"strconv"
+	"fmt"
 )
 
 type BoundingBox struct {
-	MinX, MinY, MaxX, MaxY, Width, Height float64
+	MinX, MinY, MaxX, MaxY, Width, Height int
 }
 
 type BoundingBoxer interface {
@@ -13,10 +13,10 @@ type BoundingBoxer interface {
 }
 
 func (bb BoundingBox) String() string {
-	ftoa := func(f float64) string {
-		return strconv.FormatFloat(f, 'f', -1, 64)
+	intToString := func(n int) string {
+		return fmt.Sprintf("%v", n)
 	}
-	return "BoundingBox{MinX: " + ftoa(bb.MinX) + ", MinY: " + ftoa(bb.MinY) + ", MaxX: " + ftoa(bb.MaxX) + ", MaxY: " + ftoa(bb.MaxY) + ", Width: " + ftoa(bb.Width) + ", Height: " + ftoa(bb.Height) + "}"
+	return "BoundingBox{MinX: " + intToString(bb.MinX) + ", MinY: " + intToString(bb.MinY) + ", MaxX: " + intToString(bb.MaxX) + ", MaxY: " + intToString(bb.MaxY) + ", Width: " + intToString(bb.Width) + ", Height: " + intToString(bb.Height) + "}"
 }
 
 func (bb *BoundingBox) Collides(other *BoundingBox) bool {

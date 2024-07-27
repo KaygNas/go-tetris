@@ -1,25 +1,23 @@
 package components
 
-import "math"
-
 type Container struct {
-	CenterX   float64
-	CenterY   float64
-	Children  []Block
+	/* X, Y is the left-top conner of the Container */
+	X, Y      int
+	Blocks    []Block
 	Transform Transform
 }
 
-func (container *Container) GetAboslutePosition(x, y float64) (ax, ay float64) {
+func (container *Container) GetAboslutePosition(x, y int) (ax, ay int) {
 	ax, ay = container.Transform.TranformPosition(x, y)
-	ax += container.CenterX
-	ay += container.CenterY
+	ax += container.X
+	ay += container.Y
 	return
 }
 
-func (container *Container) GetLocalPosition(x, y float64) (lx, ly float64) {
+func (container *Container) GetLocalPosition(x, y int) (lx, ly int) {
 	lx, ly = container.Transform.ReversePosition(x, y)
-	lx = lx - container.CenterX
-	ly = ly - container.CenterY
+	lx = lx - container.X
+	ly = ly - container.Y
 	return
 }
 
@@ -27,12 +25,7 @@ func (container *Container) GetChildAbsoluteBoundingBox(block *Block) BoundingBo
 	bb := block.GetBoundingBox()
 	minX, minY := container.GetAboslutePosition(bb.MinX, bb.MinY)
 	maxX, maxY := container.GetAboslutePosition(bb.MaxX, bb.MaxY)
-	if minX > maxX {
-		minX, maxX = maxX, minX
-	}
-	if minY > maxY {
-		minY, maxY = maxY, minY
-	}
+	minX, minY, maxX, maxY = minInt(minX, maxX), minInt(minY, maxY), maxInt(maxX, minX), maxInt(maxY, minY)
 	return BoundingBox{
 		MinX:   minX,
 		MinY:   minY,
@@ -44,26 +37,17 @@ func (container *Container) GetChildAbsoluteBoundingBox(block *Block) BoundingBo
 }
 
 func (container *Container) GetBoundingBox() BoundingBox {
-	var minX, minY, maxX, maxY float64
-	for i, block := range container.Children {
-		bb := block.GetBoundingBox()
+	var minX, minY, maxX, maxY int
+	for i, block := range container.Blocks {
+		bb := container.GetChildAbsoluteBoundingBox(&block)
 		if i == 0 {
 			minX, minY, maxX, maxY = bb.MinX, bb.MinY, bb.MaxX, bb.MaxY
 		} else {
-			minX = math.Min(minX, bb.MinX)
-			minY = math.Min(minY, bb.MinY)
-			maxX = math.Max(maxX, bb.MaxX)
-			maxY = math.Max(maxY, bb.MaxY)
+			minX = minInt(minX, bb.MinX)
+			minY = minInt(minY, bb.MinY)
+			maxX = maxInt(maxX, bb.MaxX)
+			maxY = maxInt(maxY, bb.MaxY)
 		}
-	}
-	// the bbox is still a rectangle even after rotation
-	minX, minY = container.GetAboslutePosition(minX, minY)
-	maxX, maxY = container.GetAboslutePosition(maxX, maxY)
-	if minX > maxX {
-		minX, maxX = maxX, minX
-	}
-	if minY > maxY {
-		minY, maxY = maxY, minY
 	}
 	return BoundingBox{
 		MinX:   minX,
@@ -88,9 +72,9 @@ func (container *Container) BoundingBoxContain(other *Container) bool {
 }
 
 func (container *Container) ChildrenCollide(other *Container) bool {
-	for _, block := range container.Children {
+	for _, block := range container.Blocks {
 		bb1 := container.GetChildAbsoluteBoundingBox(&block)
-		for _, otherBlock := range other.Children {
+		for _, otherBlock := range other.Blocks {
 			bb2 := other.GetChildAbsoluteBoundingBox(&otherBlock)
 			if bb1.Collides(&bb2) {
 				return true
@@ -101,25 +85,23 @@ func (container *Container) ChildrenCollide(other *Container) bool {
 }
 
 func (container *Container) Merge(other *Container) {
-	for _, block := range other.Children {
-		x, y := other.GetAboslutePosition(block.CenterX, block.CenterY)
+	for _, block := range other.Blocks {
+		x, y := other.GetAboslutePosition(block.X, block.Y)
 		x, y = container.GetLocalPosition(x, y)
 		b := Block{
-			CenterX: x,
-			CenterY: y,
-			Width:   block.Width,
-			Height:  block.Height,
-			Color:   block.Color,
+			X:     x,
+			Y:     y,
+			Color: block.Color,
 		}
-		container.Children = append(container.Children, b)
+		container.Blocks = append(container.Blocks, b)
 	}
 }
 
 // remove child in the container
 func (container *Container) RemoveChild(block *Block) {
-	for i, b := range container.Children {
+	for i, b := range container.Blocks {
 		if b == *block {
-			container.Children = append(container.Children[:i], container.Children[i+1:]...)
+			container.Blocks = append(container.Blocks[:i], container.Blocks[i+1:]...)
 			return
 		}
 	}

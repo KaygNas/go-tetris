@@ -62,7 +62,7 @@ func (p *Piece) MoveInto(target components.BoundingBoxer) {
 		return
 	}
 
-	var dx, dy float64
+	var dx, dy int
 	if sBbox.MinX < tBbox.MinX {
 		dx = tBbox.MinX - sBbox.MinX
 	} else if sBbox.MaxX > tBbox.MaxX {
@@ -85,13 +85,13 @@ func NewPieceI() Piece {
 	return Piece{
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
-			CenterX: 6,
-			CenterY: -12,
-			Children: []components.Block{
-				{CenterX: 0, CenterY: -1.5, Width: 1, Height: 1, Color: color},
-				{CenterX: 0, CenterY: -0.5, Width: 1, Height: 1, Color: color},
-				{CenterX: 0, CenterY: 0.5, Width: 1, Height: 1, Color: color2},
-				{CenterX: 0, CenterY: 1.5, Width: 1, Height: 1, Color: color2},
+			X: 0,
+			Y: 2,
+			Blocks: []components.Block{
+				{X: 0, Y: -2, Color: color},
+				{X: 0, Y: -1, Color: color},
+				{X: 0, Y: 0, Color: color2},
+				{X: 0, Y: 1, Color: color2},
 			},
 		}}
 }
