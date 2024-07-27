@@ -3,6 +3,7 @@ package systems
 import (
 	"go-tetris/components"
 	"go-tetris/entities"
+	"os"
 	"time"
 
 	"github.com/nsf/termbox-go"
@@ -43,6 +44,10 @@ func renderContainer(c *components.Container) {
 
 // TODO: Implement the rasterizeRect function
 func rasterizeRect(x, y, w, h float64, color components.Color) {
+	var char rune = ' '
+	if os.Getenv("MODE") == "development" {
+		char = '-'
+	}
 	// rasterize the block
 	colorAttr := termbox.RGBToAttribute(color.R, color.G, color.B)
 	// 2x because each block is 2 characters high so that it looks like a square
@@ -50,8 +55,8 @@ func rasterizeRect(x, y, w, h float64, color components.Color) {
 		for j := 0; j < int(h); j++ {
 			cx := (int(x) + i) * 2
 			cy := int(y) + j
-			termbox.SetCell(cx, cy, ' ', colorAttr, colorAttr)
-			termbox.SetCell(cx+1, cy, ' ', colorAttr, colorAttr)
+			termbox.SetCell(cx, cy, char, colorAttr, colorAttr)
+			termbox.SetCell(cx+1, cy, char, colorAttr, colorAttr)
 		}
 	}
 }
