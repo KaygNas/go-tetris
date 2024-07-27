@@ -2,6 +2,7 @@ package systems
 
 import (
 	"errors"
+	"go-tetris/components"
 	"go-tetris/entities"
 	"time"
 
@@ -68,6 +69,7 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 
 	select {
 	case <-gs.fallingTimer.C:
+		gs.clearLines()
 		g.Piece.MoveDown()
 		gs.fallingTimer.Reset(FALLING_SPEED)
 	default:
@@ -102,6 +104,24 @@ func (gs *GamePlaySystem) lockCurrentPiece() {
 	g := gs.game
 	g.LockedPieces.Container.Merge(&g.Piece.Container)
 	g.Piece = entities.NewPiece()
+}
+
+func (gs *GamePlaySystem) clearLines() {
+	g := gs.game
+	bb := g.Board.Container.GetBoundingBox()
+	for y := bb.MinY; y < bb.MaxY; y++ {
+		removingBbox := components.BoundingBox{
+			MinX:   bb.MinX,
+			MinY:   y,
+			MaxX:   bb.MaxX,
+			MaxY:   y + 1,
+			Width:  bb.Width,
+			Height: 1,
+		}
+		if g.LockedPieces.CheckFullInBoundingBox(&removingBbox) {
+			g.LockedPieces.RemoveChildrenInBoundingBox(&removingBbox)
+		}
+	}
 }
 
 func NewGamePlaySystem() GamePlaySystem {

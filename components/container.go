@@ -114,3 +114,13 @@ func (container *Container) Merge(other *Container) {
 		container.Children = append(container.Children, b)
 	}
 }
+
+// remove child in the container
+func (container *Container) RemoveChild(block *Block) {
+	for i, b := range container.Children {
+		if b == *block {
+			container.Children = append(container.Children[:i], container.Children[i+1:]...)
+			return
+		}
+	}
+}
