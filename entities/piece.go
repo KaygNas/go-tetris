@@ -2,6 +2,7 @@ package entities
 
 import (
 	"go-tetris/components"
+	"math/rand"
 	"os"
 )
 
@@ -96,11 +97,119 @@ func NewPieceI() Piece {
 		}}
 }
 
+func NewPieceJ() Piece {
+	color := components.HexColor(0xFF0000)
+	return Piece{
+		PicecType: PIECE_TYPE_I,
+		Container: components.Container{
+			X: 0,
+			Y: 2,
+			Blocks: []components.Block{
+				{X: 0, Y: -2, Color: color},
+				{X: 0, Y: -1, Color: color},
+				{X: 0, Y: 0, Color: color},
+				{X: -1, Y: 0, Color: color},
+			},
+		}}
+}
+
+func NewPieceL() Piece {
+	color := components.HexColor(0x00FF00)
+	return Piece{
+		PicecType: PIECE_TYPE_I,
+		Container: components.Container{
+			X: 0,
+			Y: 2,
+			Blocks: []components.Block{
+				{X: 0, Y: -2, Color: color},
+				{X: 0, Y: -1, Color: color},
+				{X: 0, Y: 0, Color: color},
+				{X: 1, Y: 0, Color: color},
+			},
+		}}
+}
+
+func NewPieceO() Piece {
+	color := components.HexColor(0x0000FF)
+	return Piece{
+		PicecType: PIECE_TYPE_I,
+		Container: components.Container{
+			X: 0,
+			Y: 1,
+			Blocks: []components.Block{
+				{X: 0, Y: -1, Color: color},
+				{X: 1, Y: -1, Color: color},
+				{X: 0, Y: 0, Color: color},
+				{X: 1, Y: 0, Color: color},
+			},
+		}}
+}
+
+func NewPieceS() Piece {
+	color := components.HexColor(0xFFFF00)
+	return Piece{
+		PicecType: PIECE_TYPE_I,
+		Container: components.Container{
+			X: 0,
+			Y: 2,
+			Blocks: []components.Block{
+				{X: 1, Y: -1, Color: color},
+				{X: 0, Y: -1, Color: color},
+				{X: 0, Y: 0, Color: color},
+				{X: -1, Y: 0, Color: color},
+			},
+		}}
+}
+
+func NewPieceZ() Piece {
+	color := components.HexColor(0xFF00FF)
+	return Piece{
+		PicecType: PIECE_TYPE_I,
+		Container: components.Container{
+			X: 0,
+			Y: 2,
+			Blocks: []components.Block{
+				{X: -1, Y: -1, Color: color},
+				{X: 0, Y: -1, Color: color},
+				{X: 0, Y: 0, Color: color},
+				{X: 1, Y: 0, Color: color},
+			},
+		}}
+}
+
+func NewPieceT() Piece {
+	color := components.HexColor(0x00FFFF)
+	return Piece{
+		PicecType: PIECE_TYPE_I,
+		Container: components.Container{
+			X: 0,
+			Y: 2,
+			Blocks: []components.Block{
+				{X: -1, Y: -1, Color: color},
+				{X: 0, Y: -1, Color: color},
+				{X: 1, Y: -1, Color: color},
+				{X: 0, Y: 0, Color: color},
+			},
+		}}
+}
+
 func NewPiece() Piece {
-	pieceType := PIECE_TYPE_I
+	pieceType := rand.Int() % 7
 	switch pieceType {
 	case PIECE_TYPE_I:
 		return NewPieceI()
+	case PIECE_TYPE_J:
+		return NewPieceJ()
+	case PIECE_TYPE_L:
+		return NewPieceL()
+	case PIECE_TYPE_O:
+		return NewPieceO()
+	case PIECE_TYPE_S:
+		return NewPieceS()
+	case PIECE_TYPE_T:
+		return NewPieceT()
+	case PIECE_TYPE_Z:
+		return NewPieceZ()
 	default:
 		return NewPieceI()
 	}
