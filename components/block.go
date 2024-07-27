@@ -16,6 +16,7 @@ type Block struct {
 	/* X, Y is the left-top conner of the Block */
 	X, Y  int
 	Color Color
+	Char  *rune
 }
 
 func (block *Block) GetBoundingBox() BoundingBox {

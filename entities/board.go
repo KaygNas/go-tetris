@@ -8,18 +8,27 @@ type Board struct {
 	components.Container
 }
 
+func Map[T, U any](arr []T, f func(T) U) []U {
+	result := make([]U, len(arr))
+	for i, v := range arr {
+		result[i] = f(v)
+	}
+	return result
+}
+
 func NewBoard() Board {
-	color := components.HexColor(0xFFFFFF)
 	width := 12
 	height := 24
-	blocks := make([]components.Block, width*height)
+	blocks := make([]components.Block, 0, width*height)
+
+	color := components.HexColor(0xCCCCCC)
 	for y := 0; y < height; y++ {
 		for x := 0; x < width; x++ {
-			blocks[y*width+x] = components.Block{
+			blocks = append(blocks, components.Block{
 				X:     x,
 				Y:     y,
 				Color: color,
-			}
+			})
 		}
 	}
 
