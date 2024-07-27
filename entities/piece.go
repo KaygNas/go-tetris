@@ -18,22 +18,40 @@ const (
 
 type Piece struct {
 	components.Container
-	PicecType uint
+	PicecType       uint
+	cachedTransform components.Transform
+}
+
+func saveTransform(p *Piece) {
+	p.cachedTransform = p.Transform
+}
+
+func restoreTransform(p *Piece) {
+	p.Transform = p.cachedTransform
+}
+
+func (p *Piece) RestoreTransform() {
+	restoreTransform(p)
 }
 
 func (p *Piece) MoveLeft() {
+	saveTransform(p)
 	p.Container.Transform.Translate(-1, 0)
 }
 func (p *Piece) MoveRight() {
+	saveTransform(p)
 	p.Container.Transform.Translate(1, 0)
 }
 func (p *Piece) MoveUp() {
+	saveTransform(p)
 	p.Container.Transform.Translate(0, -1)
 }
 func (p *Piece) MoveDown() {
+	saveTransform(p)
 	p.Container.Transform.Translate(0, 1)
 }
 func (p *Piece) RotateCW() {
+	saveTransform(p)
 	p.Container.Transform.RotateCW()
 }
 

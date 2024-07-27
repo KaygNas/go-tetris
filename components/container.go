@@ -75,16 +75,29 @@ func (container *Container) GetBoundingBox() BoundingBox {
 	}
 }
 
-func (container *Container) Collides(other *Container) bool {
+func (container *Container) BouningBoxCollide(other *Container) bool {
 	bb1 := container.GetBoundingBox()
 	bb2 := other.GetBoundingBox()
 	return bb1.Collides(&bb2)
 }
 
-func (container *Container) Contain(other *Container) bool {
+func (container *Container) BoundingBoxContain(other *Container) bool {
 	bb1 := container.GetBoundingBox()
 	bb2 := other.GetBoundingBox()
 	return bb1.Contain(&bb2)
+}
+
+func (container *Container) ChildrenCollide(other *Container) bool {
+	for _, block := range container.Children {
+		bb1 := container.GetChildAbsoluteBoundingBox(&block)
+		for _, otherBlock := range other.Children {
+			bb2 := other.GetChildAbsoluteBoundingBox(&otherBlock)
+			if bb1.Collides(&bb2) {
+				return true
+			}
+		}
+	}
+	return false
 }
 
 func (container *Container) Merge(other *Container) {
