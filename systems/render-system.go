@@ -32,6 +32,7 @@ func (rs *RenderSystem) render(g *entities.Game) {
 	renderContainer(&g.Piece.Container)
 	renderContainer(&g.LockedPieces.Container)
 	renderContainer(&g.Instructions.Container)
+	renderContainer(&g.Stat.Container)
 
 	termbox.Flush()
 }

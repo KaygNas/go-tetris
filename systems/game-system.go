@@ -3,6 +3,7 @@ package systems
 import (
 	"errors"
 	"go-tetris/entities"
+	"math"
 	"time"
 
 	"github.com/nsf/termbox-go"
@@ -57,8 +58,9 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 			case ev.Key == termbox.KeyArrowDown:
 				g.Piece.MoveDown()
 				gs.fallingTimer.Reset(FALLING_SPEED) // reset timer so that select below will not be triggered
-			case ev.Key == termbox.KeySpace:
-
+			case ev.Ch == 'n':
+				gs.game.NewGame()
+				gs.fallingTimer.Reset(FALLING_SPEED) // reset timer so that select below will not be triggered
 			case ev.Ch == 'q' || ev.Key == termbox.KeyEsc || ev.Key == termbox.KeyCtrlC || ev.Key == termbox.KeyCtrlD:
 				gs.shouldQuit = true
 			}
@@ -113,13 +115,19 @@ func (gs *GamePlaySystem) lockCurrentPiece() {
 }
 
 func (gs *GamePlaySystem) clearLines() {
+	removedLines := 0
 	lp := &gs.game.LockedPieces
 	bbox := gs.game.Board.GetBoundingBox()
 	for y := bbox.MinY; y < bbox.MaxY; y++ {
 		if lp.CheckLine(bbox.MinX, bbox.MaxX, y) {
 			lp.RemoveLine(bbox.MinX, bbox.MaxX, y)
 			lp.MoveDownBlocksByY(y)
+			removedLines++
 		}
+	}
+	if removedLines > 0 {
+		earnedScore := math.Pow(2, float64(removedLines)) * 100
+		gs.game.Stat.UpdateScore(gs.game.Stat.Score + int(earnedScore))
 	}
 }
 

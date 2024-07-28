@@ -20,6 +20,8 @@ func newInstruction() Instruction {
 		"----------------",
 		" ",
 		" Press Q to Quit",
+		" ",
+		" Press N to New Game",
 	}
 	charLen := 0
 	for _, instruction := range instructions {
@@ -29,7 +31,7 @@ func newInstruction() Instruction {
 	blocks := make([]components.Block, 0, charLen)
 
 	marginLeft := 16
-	marginTop := 2
+	marginTop := 6
 	for i, instruction := range instructions {
 		for j, char := range instruction {
 			blocks = append(blocks, components.Block{

@@ -1,10 +1,15 @@
 package entities
 
 type Game struct {
+	Stat         Stat
 	Instructions Instruction
 	Board        Board
 	Piece        Piece
 	LockedPieces LockedPieces
+}
+
+func (g *Game) NewGame() {
+	*g = NewGame()
 }
 
 func (g *Game) NextPiece() {
@@ -20,6 +25,7 @@ func (g *Game) movePieceToBoardCenter() {
 
 func NewGame() Game {
 	g := Game{
+		Stat:         newStat(0),
 		Instructions: newInstruction(),
 		Board:        newBoard(),
 		Piece:        newPiece(),
