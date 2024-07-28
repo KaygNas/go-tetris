@@ -7,17 +7,21 @@ import (
 
 type Stat struct {
 	components.Container
-	Score int
+	Score    int
+	PlayTime int
 }
 
-func (s *Stat) UpdateScore(score int) {
-	*s = newStat(score)
+func (s *Stat) UpdateScore(score int, playTime int) {
+	*s = newStat(score, playTime)
 }
 
-func newStat(score int) Stat {
+func newStat(score int, playTime int) Stat {
 	stats := []string{
 		"----Stats----",
+		" ",
 		fmt.Sprintf(" Score: %d", score),
+		" ",
+		fmt.Sprintf(" Play Time: %ds", playTime),
 	}
 	charLen := 0
 	for _, instruction := range stats {
@@ -40,7 +44,8 @@ func newStat(score int) Stat {
 	}
 
 	return Stat{
-		Score: score,
+		Score:    score,
+		PlayTime: playTime,
 		Container: components.Container{
 			Blocks: blocks,
 		}}

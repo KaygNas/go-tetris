@@ -31,7 +31,7 @@ func newInstruction() Instruction {
 	blocks := make([]components.Block, 0, charLen)
 
 	marginLeft := 16
-	marginTop := 6
+	marginTop := 10
 	for i, instruction := range instructions {
 		for j, char := range instruction {
 			blocks = append(blocks, components.Block{

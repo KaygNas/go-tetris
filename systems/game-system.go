@@ -20,7 +20,6 @@ type GamePlaySystem struct {
 }
 
 func (gs *GamePlaySystem) Init(g *entities.Game) {
-	g.NextPiece()
 	gs.game = g
 
 	gs.eventQueue = make(chan termbox.Event)
@@ -45,6 +44,7 @@ func (gs *GamePlaySystem) Close() {
 }
 func (gs *GamePlaySystem) play(dt time.Duration) {
 	g := gs.game
+
 	select {
 	case ev := <-gs.eventQueue:
 		if ev.Type == termbox.EventKey {
@@ -69,12 +69,18 @@ func (gs *GamePlaySystem) play(dt time.Duration) {
 		// no event
 	}
 
+	if g.CheckGameOver() {
+		g.Piece.RestoreTransform()
+		return
+	}
+
 	g.EnsureNoCollided()
 
 	select {
 	case <-gs.fallingTimer.C:
 		g.TryLockCurrentPiece()
-		g.ClearLines()
+		lines := g.ClearLines()
+		g.UpdateScore(lines)
 		g.Piece.MoveDown()
 		gs.fallingTimer.Reset(FALLING_SPEED)
 	default:
@@ -82,6 +88,7 @@ func (gs *GamePlaySystem) play(dt time.Duration) {
 	}
 
 	g.EnsureNoCollided()
+	g.UpdatePlayTime(dt)
 }
 
 func NewGamePlaySystem() GamePlaySystem {

@@ -1,6 +1,9 @@
 package entities
 
-import "math"
+import (
+	"math"
+	"time"
+)
 
 type Game struct {
 	Stat         Stat
@@ -61,7 +64,7 @@ func (g *Game) lockCurrentPiece() {
 	g.NextPiece()
 }
 
-func (g *Game) ClearLines() {
+func (g *Game) ClearLines() int {
 	removedLines := 0
 	lp := g.LockedPieces
 	bbox := g.Board.GetBoundingBox()
@@ -72,15 +75,28 @@ func (g *Game) ClearLines() {
 			removedLines++
 		}
 	}
+	return removedLines
+
+}
+
+func (g *Game) UpdateScore(removedLines int) {
 	if removedLines > 0 {
 		earnedScore := math.Pow(2, float64(removedLines)) * 100
-		g.Stat.UpdateScore(g.Stat.Score + int(earnedScore))
+		g.Stat.UpdateScore(g.Stat.Score+int(earnedScore), g.Stat.PlayTime)
 	}
+}
+
+func (g *Game) UpdatePlayTime(dt time.Duration) {
+	g.Stat.UpdateScore(g.Stat.Score, int(dt.Seconds()))
+}
+
+func (g *Game) CheckGameOver() bool {
+	return !g.Board.Container.BoundingBoxContain(&g.LockedPieces.Container)
 }
 
 func NewGame() Game {
 	g := Game{
-		Stat:         newStat(0),
+		Stat:         newStat(0, 0),
 		Instructions: newInstruction(),
 		Board:        newBoard(),
 		Piece:        newPiece(),
