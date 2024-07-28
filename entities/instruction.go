@@ -8,7 +8,7 @@ type Instruction struct {
 	components.Container
 }
 
-func NewInstruction() Instruction {
+func newInstruction() Instruction {
 	instructions := []string{
 		"----Control----",
 		" ",

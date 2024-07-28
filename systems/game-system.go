@@ -20,6 +20,7 @@ type GamePlaySystem struct {
 }
 
 func (gs *GamePlaySystem) Init(g *entities.Game) {
+	g.NextPiece()
 	gs.game = g
 
 	gs.eventQueue = make(chan termbox.Event)
@@ -68,6 +69,7 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 
 	select {
 	case <-gs.fallingTimer.C:
+		gs.tryLockCurrentPiece()
 		gs.clearLines()
 		g.Piece.MoveDown()
 		gs.fallingTimer.Reset(FALLING_SPEED)
@@ -85,6 +87,10 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 		g.Piece.MoveInto(&g.Board.Container)
 	}
 
+}
+
+func (gs *GamePlaySystem) tryLockCurrentPiece() {
+	g := gs.game
 	// check if the piece can move down
 	g.Piece.MoveDown()
 	if isChildrenCollided := g.LockedPieces.Container.IsChildrenCollide(&g.Piece.Container); isChildrenCollided {
@@ -103,7 +109,7 @@ func (gs *GamePlaySystem) play(g *entities.Game, dt time.Duration) {
 func (gs *GamePlaySystem) lockCurrentPiece() {
 	g := gs.game
 	g.LockedPieces.Container.Merge(&g.Piece.Container)
-	g.Piece = entities.NewPiece()
+	g.NextPiece()
 }
 
 func (gs *GamePlaySystem) clearLines() {

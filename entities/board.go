@@ -16,7 +16,7 @@ func Map[T, U any](arr []T, f func(T) U) []U {
 	return result
 }
 
-func NewBoard() Board {
+func newBoard() Board {
 	width := 12
 	height := 24
 	blocks := make([]components.Block, 0, width*height)

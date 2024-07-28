@@ -91,6 +91,6 @@ func (lp *LockedPieces) MoveDownBlocksByY(y int) {
 	}
 }
 
-func NewLockedPieces() LockedPieces {
+func newLockedPieces() LockedPieces {
 	return LockedPieces{}
 }

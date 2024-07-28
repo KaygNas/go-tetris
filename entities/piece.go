@@ -77,6 +77,14 @@ func (p *Piece) MoveInto(target components.BoundingBoxer) {
 	p.Transform.Translate(dx, dy)
 }
 
+func (p *Piece) MoveToCenter(tx, ty int) {
+	bbox := p.GetBoundingBox()
+	cx, cy := (bbox.MinX+bbox.MaxX)/2, (bbox.MinY+bbox.MaxY)/2
+	dx := tx - cx
+	dy := ty - cy
+	p.Transform.Translate(dx, dy)
+}
+
 func NewPieceI() Piece {
 	color := components.HexColor(0x00FFFF)
 	color2 := color
@@ -178,7 +186,7 @@ func NewPieceZ() Piece {
 }
 
 func NewPieceT() Piece {
-	color := components.HexColor(0x00FFFF)
+	color := components.HexColor(0xFFAA00)
 	return Piece{
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
@@ -193,7 +201,7 @@ func NewPieceT() Piece {
 		}}
 }
 
-func NewPiece() Piece {
+func newPiece() Piece {
 	pieceType := rand.Int() % 7
 	switch pieceType {
 	case PIECE_TYPE_I:

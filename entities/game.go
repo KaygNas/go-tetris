@@ -7,11 +7,24 @@ type Game struct {
 	LockedPieces LockedPieces
 }
 
+func (g *Game) NextPiece() {
+	g.Piece = newPiece()
+	g.movePieceToBoardCenter()
+}
+
+func (g *Game) movePieceToBoardCenter() {
+	b, p := &g.Board, &g.Piece
+	bbox := b.Container.GetBoundingBox()
+	p.MoveToCenter((bbox.MinX+bbox.MaxX)/2, bbox.MinY)
+}
+
 func NewGame() Game {
-	return Game{
-		Instructions: NewInstruction(),
-		Board:        NewBoard(),
-		Piece:        NewPiece(),
-		LockedPieces: NewLockedPieces(),
+	g := Game{
+		Instructions: newInstruction(),
+		Board:        newBoard(),
+		Piece:        newPiece(),
+		LockedPieces: newLockedPieces(),
 	}
+	g.movePieceToBoardCenter()
+	return g
 }
