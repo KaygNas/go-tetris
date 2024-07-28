@@ -3,7 +3,6 @@ package entities
 import (
 	"go-tetris/components"
 	"math/rand"
-	"os"
 )
 
 // Piece Type for the Tetris Piece
@@ -87,20 +86,16 @@ func (p *Piece) MoveToCenter(tx, ty int) {
 
 func NewPieceI() Piece {
 	color := components.HexColor(0x00FFFF)
-	color2 := color
-	if mode := os.Getenv("MODE"); mode == "development" {
-		color2 = components.HexColor(0x00AAAA) // Color for development mode
-	}
 	return Piece{
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
 			X: 0,
-			Y: 2,
+			Y: -2,
 			Blocks: []components.Block{
 				{X: 0, Y: -2, Color: color},
 				{X: 0, Y: -1, Color: color},
-				{X: 0, Y: 0, Color: color2},
-				{X: 0, Y: 1, Color: color2},
+				{X: 0, Y: 0, Color: color},
+				{X: 0, Y: 1, Color: color},
 			},
 		}}
 }
@@ -111,7 +106,7 @@ func NewPieceJ() Piece {
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
 			X: 0,
-			Y: 2,
+			Y: -1,
 			Blocks: []components.Block{
 				{X: 0, Y: -2, Color: color},
 				{X: 0, Y: -1, Color: color},
@@ -127,7 +122,7 @@ func NewPieceL() Piece {
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
 			X: 0,
-			Y: 2,
+			Y: -1,
 			Blocks: []components.Block{
 				{X: 0, Y: -2, Color: color},
 				{X: 0, Y: -1, Color: color},
@@ -143,7 +138,7 @@ func NewPieceO() Piece {
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
 			X: 0,
-			Y: 1,
+			Y: -1,
 			Blocks: []components.Block{
 				{X: 0, Y: -1, Color: color},
 				{X: 1, Y: -1, Color: color},
@@ -159,7 +154,7 @@ func NewPieceS() Piece {
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
 			X: 0,
-			Y: 2,
+			Y: -1,
 			Blocks: []components.Block{
 				{X: 1, Y: -1, Color: color},
 				{X: 0, Y: -1, Color: color},
@@ -175,7 +170,7 @@ func NewPieceZ() Piece {
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
 			X: 0,
-			Y: 2,
+			Y: -1,
 			Blocks: []components.Block{
 				{X: -1, Y: -1, Color: color},
 				{X: 0, Y: -1, Color: color},
@@ -191,7 +186,7 @@ func NewPieceT() Piece {
 		PicecType: PIECE_TYPE_I,
 		Container: components.Container{
 			X: 0,
-			Y: 2,
+			Y: -1,
 			Blocks: []components.Block{
 				{X: -1, Y: -1, Color: color},
 				{X: 0, Y: -1, Color: color},
