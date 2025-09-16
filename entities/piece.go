@@ -1,8 +1,9 @@
 package entities
 
 import (
-	"go-tetris/components"
 	"math/rand"
+
+	"github.com/KaygNas/go-tetris/components"
 )
 
 // Piece Type for the Tetris Piece

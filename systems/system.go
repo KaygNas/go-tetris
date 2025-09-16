@@ -1,8 +1,9 @@
 package systems
 
 import (
-	"go-tetris/entities"
 	"time"
+
+	"github.com/KaygNas/go-tetris/entities"
 )
 
 type System interface {

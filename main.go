@@ -2,9 +2,10 @@ package main
 
 import (
 	"fmt"
-	"go-tetris/entities"
-	"go-tetris/systems"
 	"time"
+
+	"github.com/KaygNas/go-tetris/entities"
+	"github.com/KaygNas/go-tetris/systems"
 )
 
 func gameLoop(fn func(dt time.Duration) error) error {

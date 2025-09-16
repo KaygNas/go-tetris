@@ -1,8 +1,9 @@
 package entities
 
 import (
-	"go-tetris/components"
 	"slices"
+
+	"github.com/KaygNas/go-tetris/components"
 )
 
 type LockedPieces struct {

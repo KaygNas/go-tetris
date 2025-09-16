@@ -1,10 +1,11 @@
 package systems
 
 import (
-	"go-tetris/components"
-	"go-tetris/entities"
 	"os"
 	"time"
+
+	"github.com/KaygNas/go-tetris/components"
+	"github.com/KaygNas/go-tetris/entities"
 
 	"github.com/nsf/termbox-go"
 )

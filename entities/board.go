@@ -1,7 +1,7 @@
 package entities
 
 import (
-	"go-tetris/components"
+	"github.com/KaygNas/go-tetris/components"
 )
 
 type Board struct {

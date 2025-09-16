@@ -1,4 +1,4 @@
-module go-tetris
+module github.com/KaygNas/go-tetris
 
 go 1.22.5
 

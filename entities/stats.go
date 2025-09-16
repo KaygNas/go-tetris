@@ -2,7 +2,8 @@ package entities
 
 import (
 	"fmt"
-	"go-tetris/components"
+
+	"github.com/KaygNas/go-tetris/components"
 )
 
 type Stat struct {

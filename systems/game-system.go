@@ -2,8 +2,9 @@ package systems
 
 import (
 	"errors"
-	"go-tetris/entities"
 	"time"
+
+	"github.com/KaygNas/go-tetris/entities"
 
 	"github.com/nsf/termbox-go"
 )
